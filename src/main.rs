@@ -67,21 +67,21 @@ fn main() {
         .lazy()
         .slice(0, 100)
         .with_column(
-            when(col("variety").eq(lit("Versicolor"))).then(lit("kubus")).otherwise(lit("nic")).alias("haha")
+            when(col("variety").eq(lit("Versicolor"))).then(lit(1)).otherwise(lit(0)).alias("variety")
         )
         .collect()
         .unwrap();
     
-    let check_encoding_series = 
-    y_train
-    .clone()
-    .select(["haha"])
-    .unwrap()
-    .select_series(["haha"])
-    .unwrap();
+    // let check_encoding_series = 
+    // y_train
+    // .clone()
+    // .select(["haha"])
+    // .unwrap()
+    // .select_series(["haha"])
+    // .unwrap();
 
     println!("{}", y_train);
-    println!("{}", check_encoding_series[0].unique().unwrap());
+    // println!("{}", check_encoding_series[0].unique().unwrap());
 
     // let mut weights = vec![0.12, 0.34];
 
