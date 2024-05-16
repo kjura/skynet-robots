@@ -60,41 +60,35 @@ fn main() {
     let mut x_train = feature_matrix.clone().slice(0, 100);
     let mut x_test = feature_matrix.clone().slice(100, iris_dataset.shape().0);
 
-    let mut x_train_sepal_petal_length = x_train.clone().select(["sepal.length", "petal.length"]);
+    let mut x_train_sepal_petal_length = 
+    x_train
+    .clone()
+    .select(["sepal.length", "petal.length"])
+    .unwrap();
+    
     let mut y_train = 
         iris_dataset
         .clone()
         .lazy()
         .slice(0, 100)
-        .with_column(
+        .select([
             when(col("variety").eq(lit("Versicolor"))).then(lit(1)).otherwise(lit(0)).alias("variety")
+        ]
         )
         .collect()
         .unwrap();
-    
-    // let check_encoding_series = 
+
+    //println!("{}", y_train);
+    // x_train_sepal_petal_length
     // y_train
-    // .clone()
-    // .select(["haha"])
-    // .unwrap()
-    // .select_series(["haha"])
-    // .unwrap();
+    let eta: f64 = 0.01;
+    let number_of_iterations: u8 = 80;
+    let seed: u8 = 42;
+    let bias = 0.0;    
+    let mut weights = Series::new("weights", [0.2, 0.45]); // to_ndarray()
+    let mut x_train = x_train_sepal_petal_length.to_ndarray::<Float64Type>(IndexOrder::C).unwrap();
 
-    println!("{}", y_train);
-    // println!("{}", check_encoding_series[0].unique().unwrap());
-
-    // let mut weights = vec![0.12, 0.34];
-
-    // let eta: f64 = 0.01;
-    // let number_of_iterations: u8 = 80;
-    // let seed: u8 = 42;
-    // let bias = 0.0;
-    
-    // .select([col("variety")])
-    // .collect()
-    // .unwrap();
-
-    // let weights = Series::new("weights", [0.0, 0.0, 0.0, 0.0]);
+    println!("{:?}", x_train);
 
 
 }
